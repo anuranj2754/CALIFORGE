@@ -346,15 +346,43 @@ function clearHistory() {
 /* Spotify public embed: no client secret or password is collected here. */
 function loadSpotify() {
   document.getElementById("spotifyArea").innerHTML = `
-    <iframe id="spotifyFrame"
-      src="https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh?utm_source=generator"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy" title="Spotify workout playlist"></iframe>
-    <p class="notice">If Spotify refuses playback or requests login, use Spotify's official login/player controls. This embed does not authenticate your CALIFORGE account.</p>`;
+    <h3 class="accent">🔥 CHOOSE YOUR VIBE</h3>
+
+    <div class="row">
+      <button onclick="playPlaylist('37i9dQZF1DX70RN3TfWWJh')">💪 Workout</button>
+      <button onclick="playPlaylist('37i9dQZF1DX76Wlfdnj7AP')">⚡ Phonk</button>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button onclick="playPlaylist('37i9dQZF1DX0XUsuxWHRQd')">🎤 Hip-Hop</button>
+      <button onclick="playPlaylist('37i9dQZF1DX4JAvHpjipBk')">🎮 Gaming</button>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button onclick="playPlaylist('37i9dQZF1DX1g0iEXLFycr')">🌙 Chill</button>
+      <button onclick="playPlaylist('37i9dQZF1DX8NTLI2TtZa6')">🔥 Rock</button>
+    </div>
+
+    <div id="playlistPlayer" style="margin-top:18px">
+      <p>Select a playlist to load the player.</p>
+    </div>
+
+    <p class="notice">
+      Spotify login and playback depend on Spotify's current account,
+      browser and developer restrictions.
+    </p>
+  `;
 }
 
-updateStats();
-drawTimer();
-</script>
-</body>
-</html>
+function playPlaylist(id) {
+  document.getElementById("playlistPlayer").innerHTML = `
+    <iframe
+      src="https://open.spotify.com/embed/playlist/${id}?utm_source=generator"
+      width="100%" height="352"
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      style="border-radius:12px">
+    </iframe>
+  `;
+  }
