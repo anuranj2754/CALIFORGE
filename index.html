@@ -1,24 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CALIFORGE</title>
-  <style>
-    body {
-      background: #080a0a;
-      color: #39ff14;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 60px 15px;
-    }
-    h1 { font-size: 42px; }
-    p { color: white; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080a08">
+<title>CALIFORGE | Forge Yourself</title>
+
+<style>
+:root {
+  --bg: #080a08;
+  --card: #111611;
+  --green: #39ff14;
+  --muted: #9ba49a;
+  --border: #273027;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #f5fff3;
+  font-family: Arial, sans-serif;
+  padding-bottom: 85px;
+}
+header {
+  padding: 22px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 25px; font-weight: 900; }
+.logo span { color: var(--green); }
+.status { color: var(--green); font-size: 11px; }
+main { max-width: 650px; margin: auto; padding: 20px; }
+h1 { font-size: 30px; margin-bottom: 8px; }
+h2 { font-size: 20px; }
+p { color: var(--muted); line-height: 1.5; }
+.accent { color: var(--green); }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 18px;
+  margin: 15px 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.stat { text-align: center; padding: 14px 5px; }
+.number { color: var(--green); font-size: 25px; font-weight: bold; }
+.small { color: var(--muted); font-size: 12px; margin-top: 7px; }
+button {
+  background: var(--green);
+  color: #071006;
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button.secondary {
+  color: var(--green);
+  background: #172217;
+  border: 1px solid #314631;
+}
+button:active { transform: scale(.98); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.row button { flex: 1; }
+.exercise {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.exercise:last-child { border-bottom: 0; }
+.exercise input { accent-color: var(--green); width: 20px; height: 20px; }
+.exercise strong { display: block; }
+.exercise small { color: var(--muted); }
+.tag {
+  color: var(--green);
+  background: #192719;
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  margin-left: auto;
+}
+input[type="number"] {
+  background: #080a08;
+  color: white;
+  border: 1px solid var(--border);
+  padding: 12px;
+  width: 80px;
+  border-radius: 8px;
+}
+.timer {
+  font-size: 54px;
+  font-weight: bold;
+  color: var(--green);
+  text-align: center;
+  margin: 20px 0;
+}
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #0d110d;
+  border-top: 1px solid var(--border);
+  padding: 14px 5px;
+  z-index: 5;
+}
+nav button {
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 5px;
+  font-size: 12px;
+}
+nav button.active { color: var(--green); }
+.page { display: none; }
+.page.active { display: block; }
+#spotifyFrame {
+  width: 100%;
+  height: 352px;
+  border: 0;
+  border-radius: 12px;
+  background: #121212;
+}
+.notice { font-size: 12px; }
+</style>
 </head>
+
 <body>
-  <h1>CALIFORGE</h1>
-  <p>Train hard. Build strength. Forge yourself.</p>
-  <p>Workout meets music.</p>
+<header>
+  <div class="logo">CALI<span>FORGE</span></div>
+  <div class="status">● READY</div>
+</header>
+
+<main>
+  <section id="home" class="page active">
+    <p class="accent">YOUR BODY. YOUR RULES.</p>
+    <h1>Forge yourself,<br><span class="accent">one rep at a time.</span></h1>
+    <p>Build strength. Master control. Stay consistent.</p>
+
+    <div class="card stats">
+      <div class="stat"><div class="number" id="totalWorkouts">0</div><div class="small">WORKOUTS</div></div>
+      <div class="stat"><div class="number" id="totalMinutes">0</div><div class="small">MINUTES</div></div>
+      <div class="stat"><div class="number" id="streak">0</div><div class="small">DAY STREAK*</div></div>
+    </div>
+    <p class="notice">*Streak counts workout days recorded in the current local session history.</p>
+
+    <div class="card">
+      <p class="accent">TODAY'S PLAN</p>
+      <h2>Full Body Foundation</h2>
+      <p>Beginner friendly · No equipment</p>
+      <div class="row">
+        <button onclick="showPage('workout')">Start workout →</button>
+        <button class="secondary" onclick="showPage('timer')">Rest timer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💚 Daily reminder</h2>
+      <p>Consistency beats intensity when intensity isn't sustainable.</p>
+    </div>
+  </section>
+
+  <section id="workout" class="page">
+    <p class="accent">TRAINING ZONE</p>
+    <h1>Full Body</h1>
+    <p>Tick each exercise when you've completed it.</p>
+    <div class="card" id="exerciseList"></div>
+    <div class="card">
+      <p>Workout duration (minutes)</p>
+      <input id="duration" type="number" min="1" max="300" value="30">
+      <button onclick="finishWorkout()">Finish workout ✓</button>
+    </div>
+  </section>
+
+  <section id="timer" class="page">
+    <p class="accent">RECOVER STRONGER</p>
+    <h1>Rest Timer</h1>
+    <div class="card">
+      <p>Rest duration in seconds</p>
+      <div class="row">
+        <button class="secondary" onclick="setTimer(30)">30 sec</button>
+        <button class="secondary" onclick="setTimer(60)">60 sec</button>
+        <button class="secondary" onclick="setTimer(90)">90 sec</button>
+      </div>
+      <div class="timer" id="timerDisplay">01:00</div>
+      <div class="row">
+        <button onclick="startTimer()">Start</button>
+        <button class="secondary" onclick="pauseTimer()">Pause</button>
+        <button class="secondary" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="music" class="page">
+    <p class="accent">YOUR TRAINING SOUNDTRACK</p>
+    <h1>Music mode 🎧</h1>
+    <div class="card">
+      <h2>Spotify</h2>
+      <p>Sign in through Spotify's official player below. You can play supported music and playlists inside this page.</p>
+      <button onclick="loadSpotify()">Load Spotify player</button>
+      <div id="spotifyArea" style="margin-top:15px">
+        <p class="notice">Load the player, then select music in Spotify.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Workout mix</h2>
+      <p>Open Spotify's workout playlist collection.</p>
+      <button class="secondary" onclick="window.open('https://open.spotify.com/genre/fitness-page','_blank')">Explore workout music ↗</button>
+      <p class="notice">The embedded player may require Spotify login. Full playback availability depends on Spotify's current account and developer restrictions.</p>
+    </div>
+  </section>
+
+  <section id="profile" class="page">
+    <p class="accent">YOUR JOURNEY</p>
+    <h1>Progress</h1>
+    <div class="card stats">
+      <div class="stat"><div class="number" id="pWorkouts">0</div><div class="small">WORKOUTS</div></div>
+      <div class="stat"><div class="number" id="pMinutes">0</div><div class="small">MINUTES</div></div>
+      <div class="stat"><div class="number" id="pExercises">0</div><div class="small">EXERCISES</div></div>
+    </div>
+    <div class="card">
+      <h2>Workout history</h2>
+      <div id="history"><p>No workouts recorded yet. Start your first session!</p></div>
+    </div>
+    <button class="secondary" onclick="clearHistory()">Clear workout history</button>
+  </section>
+</main>
+
+<nav>
+  <button class="active" data-page="home" onclick="showPage('home')">HOME</button>
+  <button data-page="workout" onclick="showPage('workout')">WORKOUT</button>
+  <button data-page="music" onclick="showPage('music')">MUSIC</button>
+  <button data-page="profile" onclick="showPage('profile')">PROFILE</button>
+</nav>
+
+<script>
+const exercises = [
+  ["Push-ups", "3 sets × 8–12 reps"],
+  ["Bodyweight squats", "3 sets × 15 reps"],
+  ["Knee push-ups", "2 sets × 10 reps"],
+  ["Glute bridges", "3 sets × 12 reps"],
+  ["Plank", "3 sets × 20–40 sec"],
+  ["Reverse lunges", "2 sets × 8 each leg"]
+];
+
+const list = document.getElementById("exerciseList");
+exercises.forEach((e, i) => {
+  const row = document.createElement("label");
+  row.className = "exercise";
+  row.innerHTML = `<input type="checkbox" id="ex${i}">
+    <span><strong>${e[0]}</strong><small>${e[1]}</small></span>`;
+  list.appendChild(row);
+});
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b =>
+    b.classList.toggle("active", b.dataset.page === id));
+  if (id === "profile" || id === "home") updateStats();
+}
+
+let seconds = 60, timerInterval = null;
+function drawTimer() {
+  document.getElementById("timerDisplay").textContent =
+    String(Math.floor(seconds / 60)).padStart(2, "0") + ":" +
+    String(seconds % 60).padStart(2, "0");
+}
+function setTimer(n) { pauseTimer(); seconds = n; drawTimer(); }
+function startTimer() {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    if (seconds > 0) { seconds--; drawTimer(); }
+    else { pauseTimer(); alert("Rest complete! Let's go 💚"); }
+  }, 1000);
+}
+function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
+function resetTimer() { pauseTimer(); seconds = 60; drawTimer(); }
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem("califorgeHistory") || "[]"); }
+  catch (_) { return []; }
+}
+function finishWorkout() {
+  const checked = exercises.filter((_, i) => document.getElementById("ex" + i).checked);
+  if (!checked.length) {
+    alert("Tick at least one exercise you completed first.");
+    return;
+  }
+  const minutes = Math.max(1, Math.min(300, Number(document.getElementById("duration").value) || 30));
+  const history = getHistory();
+  history.unshift({
+    date: new Date().toISOString(),
+    minutes,
+    count: checked.length,
+    names: checked.map(e => e[0])
+  });
+  try {
+    localStorage.setItem("califorgeHistory", JSON.stringify(history));
+  } catch (_) {
+    alert("Could not save workout on this browser.");
+    return;
+  }
+  exercises.forEach((_, i) => document.getElementById("ex" + i).checked = false);
+  updateStats();
+  alert("Workout saved! Great work, vro 💚");
+  showPage("profile");
+}
+
+function updateStats() {
+  const h = getHistory();
+  const minutes = h.reduce((s, x) => s + x.minutes, 0);
+  const totalExercises = h.reduce((s, x) => s + x.count, 0);
+  const days = [...new Set(h.map(x => x.date.slice(0, 10)))];
+  document.getElementById("totalWorkouts").textContent = h.length;
+  document.getElementById("totalMinutes").textContent = minutes;
+  document.getElementById("streak").textContent = days.length;
+  document.getElementById("pWorkouts").textContent = h.length;
+  document.getElementById("pMinutes").textContent = minutes;
+  document.getElementById("pExercises").textContent = totalExercises;
+  document.getElementById("history").innerHTML = h.length
+    ? h.slice(0, 10).map(x =>
+      `<div class="exercise"><span><strong>${new Date(x.date).toLocaleDateString()}</strong>
+      <small>${x.count} exercises · ${x.minutes} minutes</small></span></div>`
+    ).join("")
+    : "<p>No workouts recorded yet. Start your first session!</p>";
+}
+
+function clearHistory() {
+  if (confirm("Delete all saved workout history?")) {
+    localStorage.removeItem("califorgeHistory");
+    updateStats();
+  }
+}
+
+/* Spotify public embed: no client secret or password is collected here. */
+function loadSpotify() {
+  document.getElementById("spotifyArea").innerHTML = `
+    <iframe id="spotifyFrame"
+      src="https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh?utm_source=generator"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy" title="Spotify workout playlist"></iframe>
+    <p class="notice">If Spotify refuses playback or requests login, use Spotify's official login/player controls. This embed does not authenticate your CALIFORGE account.</p>`;
+}
+
+updateStats();
+drawTimer();
+</script>
 </body>
 </html>
